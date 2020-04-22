@@ -1,11 +1,11 @@
 import React from 'react';
 import Head from 'next/head';
 import { useQuery } from '@apollo/react-hooks';
-import JOBS_QUERY from '../graphql/jobs.query';
+import LAUNCHES_QUERY from '../graphql/launches.query';
 
 const Home = () => {
   // Create a query hook
-  const { data, loading, error } = useQuery(JOBS_QUERY);
+  const { data, loading, error } = useQuery(LAUNCHES_QUERY);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -14,6 +14,7 @@ const Home = () => {
   if (error) {
     return <p>Error: {JSON.stringify(error)}</p>;
   }
+  console.log(data);
   return (
     <div>
       <Head>
@@ -21,8 +22,8 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ul>
-        {data.jobs.map(job => {
-          return <li key={`job__${job.id}`}>{job.id} {job.title}</li>;
+        {data.launchesPast.map(launch => {
+          return <li key={`launch__${launch.id}`}>{launch.mission_name}</li>;
         })}
       </ul>
     </div>
