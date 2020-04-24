@@ -26,8 +26,8 @@ const Home = () => {
       <ul>
         {data.rockets.map(launch => {
           return (
-            <li key={`launch__${launch.name}`}>
-              <Link href="/posts/first-post"><a>{launch.name}  {launch.country}</a></Link>
+            <li key={`launch__${launch.id}`}>
+              <Link href={`/rocket/${launch.id}`}><a>{launch.name}  {launch.country}</a></Link>
             </li>
           );
         })}
