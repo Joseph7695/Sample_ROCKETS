@@ -3,14 +3,17 @@ import App from 'next/app';
 import { ApolloProvider } from '@apollo/react-hooks';
 
 import withData from '../util/apollo-client';
+import Layout from '../components/layout';
 
 class MyApp extends App {
   render() {
     const { Component, pageProps, apollo } = this.props;
     return (
-      <ApolloProvider client={apollo}>
-        <Component {...pageProps} />
-      </ApolloProvider>
+      <Layout>
+        <ApolloProvider client={apollo}>
+          <Component {...pageProps} />
+        </ApolloProvider>
+      </Layout>
     );
   }
 }

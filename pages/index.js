@@ -1,7 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
 import { useQuery } from '@apollo/react-hooks';
-import LAUNCHES_QUERY from '../graphql/launches.query';
 import ROCKETS_QUERY from '../graphql/rockets.query';
 import Link from 'next/link';
 
@@ -18,7 +17,6 @@ const Home = () => {
   }
   return (
     <>
-      Read <Link href="/details"><a>this page!</a></Link>
       <Head>
         <title>Home</title>
         <link rel="icon" href="/favicon.ico" />
@@ -32,6 +30,11 @@ const Home = () => {
           );
         })}
       </ul>
+      <section className="section">
+        <div className="container">
+          <h1 className="title">Hello World from <a href="https://nextjs.org/">Next.js</a> and <a href="https://bulma.io/">Bulma</a>!</h1>
+        </div>
+      </section>
     </>
   );
 };

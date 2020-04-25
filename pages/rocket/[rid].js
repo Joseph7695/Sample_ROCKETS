@@ -27,12 +27,11 @@ const Rocket = () => {
 
     return (
         <>
-            Read <Link href="/details"><a>this page!</a></Link>
             <Head>
-                <title>Home</title>
+                <title>{data.rocket.name}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
+            <Link href="/"><a>Home</a></Link>
             <dl>
                 {descriptionList}
             </dl>
