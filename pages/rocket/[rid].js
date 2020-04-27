@@ -3,32 +3,42 @@ import { useQuery } from '@apollo/react-hooks';
 import ROCKET_QUERY from '../../graphql/rocket.query';
 import Link from 'next/link';
 import Head from 'next/head';
+import FIND_LAUNCHES_QUERY from '../../graphql/find_launches.query';
 
-const Rocket = () => {
+function useQueryFetch(query) {
+    const { data, loading, error } = useQuery(query);
+    return [data, loading, error]
+}
+
+export default function Rocket() {
     // Create a query hook
     const router = useRouter()
     const { rid } = router.query
-    const { data, loading, error } = useQuery(ROCKET_QUERY(rid));
-
-    if (loading) {
-        return <p>Loading...</p>;
+    const [rocketData, rocketLoading, rocketError] = useQueryFetch(ROCKET_QUERY(rid));
+    const [rocketLaunchesData, rocketLaunchesLoading, rocketLaunchesError] = useQueryFetch(FIND_LAUNCHES_QUERY(rid));
+    if (rocketLoading || rocketLaunchesLoading) {
+        return <p>rocketLoading...</p>;
     }
-
-    if (error) {
-        return <p>Error: {JSON.stringify(error)}</p>;
+    if (rocketError || rocketLaunchesError) {
+        return <p>rocketError: {JSON.stringify(rocketError)}</p>;
     }
-
     let descriptionList = [];
-    for (const [key, value] of Object.entries(data.rocket)) {
-        console.log(key, value);
-        //descriptionList.push(<><dt>{key}: </dt><dd>{value}</dd></>)
+    for (const [key, value] of Object.entries(rocketData.rocket)) {
+        if (key === '__typename') { continue; }
         descriptionList.push(<div key={key}>{key}: {'' + value}</div>);
     }
-
+    for (const [launchkey, launchvalue] of Object.entries(rocketLaunchesData.launches)) {
+        let launch = [<div key={launchkey}>{launchkey}:</div>];
+        for (const [key, value] of Object.entries(launchvalue)) {
+            if (key === '__typename') { continue; }
+            launch.push(<div key={key}>{key}: {'' + value}</div>);
+        }
+        descriptionList.push(launch);
+    }
     return (
         <>
             <Head>
-                <title>{data.rocket.name}</title>
+                <title>{rocketData.rocket.name}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Link href="/"><a>Home</a></Link>
@@ -38,53 +48,3 @@ const Rocket = () => {
         </>
     );
 };
-// {
-//     rocket(id: "falcon1") {
-//         cost_per_launch
-//         active
-//         boosters
-//         company
-//         country
-//         description
-//         diameter {
-//             meters
-//         }
-//         engines {
-//             type
-//             version
-//         }
-//         first_flight
-//         first_stage {
-//             reusable
-//             engines
-//         }
-//         height {
-//             meters
-//         }
-//         id
-//         landing_legs {
-//             number
-//             material
-//         }
-//         mass {
-//             kg
-//         }
-//         name
-//         payload_weights {
-//             kg
-//             name
-//             id
-//         }
-//         stages
-//         second_stage {
-//             burn_time_sec
-//             engines
-//             fuel_amount_tons
-//         }
-//         success_rate_pct
-//         type
-//         wikipedia
-//     }
-// }
-
-export default Rocket

@@ -52,7 +52,7 @@ function useQueryFetch(query) {
 export default function Home() {
   let [rocketsData, rocketsLoading, rocketsError] = useQueryFetch(ROCKETS_QUERY);
   let [launchesData, launchesLoading, launchesError] = useQueryFetch(launches_QUERY);
-  let [images, setImages] = useState({ "Falcon1": "ez", "Falcon2": "gg" });
+  let [images, setImages] = useState({});
   useEffect(() => {
     if (rocketsData && launchesData) {
       let checkedRockets = [];
@@ -73,15 +73,6 @@ export default function Home() {
   if (rocketsLoading || launchesLoading) return <p>Loading</p>;
   if (rocketsError || launchesError) { console.log("Rocket error", rocketsError, "launches error", launchesError); return <p>ERROR</p>; }
   if (!rocketsData) return <p>Not found</p>;
-  console.log("Images", images);
-  const imagesList = [];
-  for (const image in images) {
-    imagesList.push((
-      <li key={`image__${image}`}>
-        {image}: {images[image]}
-      </li>
-    ));
-  };
   return (
     <>
       <ul>
@@ -89,16 +80,15 @@ export default function Home() {
           rocketsData.rockets.map(rocket => {
             return (
               <li key={`rocket__${rocket.id}`}>
-                <Link href={`/rocket/${rocket.id}`}><a>{rocket.name}  {rocket.country}</a></Link>
-                <img src={images[rocket.id]} />
+                <Link href={`/rocket/${rocket.id}`}>
+                  <a>{rocket.name} in {rocket.country}</a>
+                </Link>
+                <img className='image is-128x128' src={images[rocket.id]} />
               </li>
             );
           })
         }
       </ul>
-      <ul>
-        {imagesList}
-      </ul >
     </>
   )
 }
