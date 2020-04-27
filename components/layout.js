@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import '../styles/styles.sass'
+import '../sass/mystyles.scss'
 
 export default ({ children }) => {
   /*
@@ -17,14 +17,14 @@ export default ({ children }) => {
   return (
     <div>
       <Head>
-        <title>jvarness</title>
+        <title>ROCKETS</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <header>
         <nav className="navbar" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
             <a className="navbar-item">
-              <img src="/static/pic.png" />
+              Some Image
             </a>
             <a id="burger" onClick={toggleStyles}
               role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarmenu">

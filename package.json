@@ -8,13 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
-    "@zeit/next-sass": "^1.0.1",
-    "bulma": "^0.7.5",
-    "next": "^8.1.0",
-    "node-sass": "^4.12.0",
-    "react-dom": "^16.8.6",
     "@apollo/react-hooks": "^3.1.5",
     "@types/react": "^16.9.34",
+    "@zeit/next-sass": "^1.0.1",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
     "apollo-link-http": "^1.5.17",
@@ -22,8 +18,14 @@
     "graphql": "^14.3.1",
     "graphql-tag": "^2.10.3",
     "isomorphic-unfetch": "^3.0.0",
+    "next": "^8.1.0",
     "next-with-apollo": "^4.0.1",
     "react": "^16.13.1",
+    "react-dom": "^16.8.6",
     "webpack": "^4.43.0"
+  },
+  "devDependencies": {
+    "bulma": "^0.8.2",
+    "node-sass": "^4.14.0"
   }
 }

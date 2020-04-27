@@ -1,5 +1,4 @@
 import gql from 'graphql-tag';
-
 const ROCKETS_QUERY = gql`
 {
   rockets {

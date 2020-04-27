@@ -1,43 +1,104 @@
-import React from 'react';
-import Head from 'next/head';
+import React, { useReducer, useEffect, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import ROCKETS_QUERY from '../graphql/rockets.query';
+import launches_QUERY from '../graphql/launches.query';
 import Link from 'next/link';
+import fetch from 'isomorphic-unfetch';
 
-const Home = () => {
-  // Create a query hook
-  const { data, loading, error } = useQuery(ROCKETS_QUERY);
+function usePrepareImages(rockets) {
+  const [data, setData] = React.useState(null)
+  const [loading, setLoading] = React.useState(true)
+  const [error, setError] = React.useState(null)
+  React.useEffect(
+    () => {
+      async function getLinks() {
+        if (!rockets) { return }
+        const result = await rockets.map(async rocket => {
+          var result = await fetch('https://api.spacex.land/graphql/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: launches_QUERY(rocket.id) })
+          });
+          var jsonresult = await result.json();
+          const launches = jsonresult.data.launches;
+          var link = '';
+          for (let i = 0; i < launches.length; i++) {
+            for (let j = 0; j < launches[i].links.flickr_images.length; j++) {
+              link = launches[i].links.flickr_images[j];
+            }
+            if (link.length > 0) { break; }
+          }
+        })
+      }
+      var links = getLinks();
+      console.log(links);
+      // setError(err.toString())
+      // setLoading(false)
+      // console.log("Links", links);
+      // setData(links);
+      setLoading(false);
+    },
+    [rockets],
+  )
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  return [data, loading, error]
+}
 
-  if (error) {
-    return <p>Error: {JSON.stringify(error)}</p>;
-  }
+function useQueryFetch(query) {
+  const { data, loading, error } = useQuery(query);
+  return [data, loading, error]
+}
+
+export default function Home() {
+  let [rocketsData, rocketsLoading, rocketsError] = useQueryFetch(ROCKETS_QUERY);
+  let [launchesData, launchesLoading, launchesError] = useQueryFetch(launches_QUERY);
+  let [images, setImages] = useState({ "Falcon1": "ez", "Falcon2": "gg" });
+  useEffect(() => {
+    if (rocketsData && launchesData) {
+      let checkedRockets = [];
+      let images = new Object();
+      //console.log(launchesData);
+      launchesData.launches.forEach(launch => {
+        let rocketId = launch.rocket.rocket.id;
+        if (!checkedRockets.includes(rocketId)) {
+          if (launch.links.flickr_images.length > 0) {
+            images[rocketId] = launch.links.flickr_images[0];
+            checkedRockets.push(rocketId);
+          }
+        }
+      });
+      setImages(images);
+    }
+  }, [rocketsData, launchesData])
+  if (rocketsLoading || launchesLoading) return <p>Loading</p>;
+  if (rocketsError || launchesError) { console.log("Rocket error", rocketsError, "launches error", launchesError); return <p>ERROR</p>; }
+  if (!rocketsData) return <p>Not found</p>;
+  console.log("Images", images);
+  const imagesList = [];
+  for (const image in images) {
+    imagesList.push((
+      <li key={`image__${image}`}>
+        {image}: {images[image]}
+      </li>
+    ));
+  };
   return (
     <>
-      <Head>
-        <title>Home</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <ul>
-        {data.rockets.map(launch => {
-          return (
-            <li key={`launch__${launch.id}`}>
-              <Link href={`/rocket/${launch.id}`}><a>{launch.name}  {launch.country}</a></Link>
-            </li>
-          );
-        })}
+        {
+          rocketsData.rockets.map(rocket => {
+            return (
+              <li key={`rocket__${rocket.id}`}>
+                <Link href={`/rocket/${rocket.id}`}><a>{rocket.name}  {rocket.country}</a></Link>
+                <img src={images[rocket.id]} />
+              </li>
+            );
+          })
+        }
       </ul>
-      <section className="section">
-        <div className="container">
-          <h1 className="title">Hello World from <a href="https://nextjs.org/">Next.js</a> and <a href="https://bulma.io/">Bulma</a>!</h1>
-        </div>
-      </section>
+      <ul>
+        {imagesList}
+      </ul >
     </>
-  );
-};
-
-
-export default Home;
+  )
+}
