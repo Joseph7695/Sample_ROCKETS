@@ -1,7 +1,5 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import '../sass/mystyles.scss'
-
 export default ({ children }) => {
   /*
    * Added this to toggle the is-active class. See:
@@ -24,7 +22,7 @@ export default ({ children }) => {
         <nav className="navbar" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
             <a className="navbar-item">
-              Some Image
+              <img src='/rocket.png'></img>
             </a>
             <a id="burger" onClick={toggleStyles}
               role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarmenu">
@@ -35,11 +33,8 @@ export default ({ children }) => {
           </div>
           <div id="navbarmenu" className="navbar-menu">
             <div className="navbar-start">
-              <Link prefetch href="/">
+              <Link href="/">
                 <a className="navbar-item">Home</a>
-              </Link>
-              <Link prefetch href="/elsewhere">
-                <a className="navbar-item">Elsewhere</a>
               </Link>
             </div>
             <div className="navbar-end">

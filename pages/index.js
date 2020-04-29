@@ -74,21 +74,27 @@ export default function Home() {
   if (rocketsError || launchesError) { console.log("Rocket error", rocketsError, "launches error", launchesError); return <p>ERROR</p>; }
   if (!rocketsData) return <p>Not found</p>;
   return (
-    <>
-      <ul>
-        {
-          rocketsData.rockets.map(rocket => {
-            return (
-              <li key={`rocket__${rocket.id}`}>
-                <Link href={`/rocket/${rocket.id}`}>
-                  <a>{rocket.name} in {rocket.country}</a>
-                </Link>
-                <img className='image is-128x128' src={images[rocket.id]} />
-              </li>
-            );
-          })
-        }
-      </ul>
-    </>
+    <section className='hero has-background-light'>
+      <div className='hero-body'>
+        <div className='container'>
+          <ul className='columns'>
+            {
+              rocketsData.rockets.map(rocket => {
+                return (
+                  <Link href={`/rocket/${rocket.id}`}>
+                    <div className='column'>
+                      <li className='notification card' key={`rocket__${rocket.id}`}>
+                        <a>{rocket.name} in {rocket.country}</a>
+                        <img className='card-image image is-128x128' src={images[rocket.id]} />
+                      </li>
+                    </div>
+                  </Link>
+                );
+              })
+            }
+          </ul>
+        </div>
+      </div>
+    </section >
   )
 }

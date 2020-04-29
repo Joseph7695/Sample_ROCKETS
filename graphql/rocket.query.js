@@ -38,13 +38,7 @@ const ROCKET_QUERY = (rid) => gql`
       id
     }
     stages
-    second_stage {
-      burn_time_sec
-      engines
-      fuel_amount_tons
-    }
     success_rate_pct
-    type
     wikipedia
   }
 }
