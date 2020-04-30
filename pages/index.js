@@ -81,7 +81,7 @@ export default function Home() {
             {
               rocketsData.rockets.map(rocket => {
                 return (
-                  <Link href={`/rocket/${rocket.id}`}>
+                  <Link key={rocket.id} href={`/rocket/${rocket.id}`}>
                     <div className='column'>
                       <li className='notification card' key={`rocket__${rocket.id}`}>
                         <a>{rocket.name} in {rocket.country}</a>

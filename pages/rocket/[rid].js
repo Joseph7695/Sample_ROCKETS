@@ -6,8 +6,8 @@ import Link from 'next/link';
 import Head from 'next/head';
 import FIND_LAUNCHES_QUERY from '../../graphql/find_launches.query';
 
-function useQueryFetch(query) {
-    const { data, loading, error } = useQuery(query);
+function useQueryFetch(query, variables) {
+    const { data, loading, error } = useQuery(query, variables);
     return [data, loading, error]
 }
 function descriptionCard(key, value) {
@@ -34,7 +34,7 @@ export default function Rocket() {
         let images = [];
         props.launch.links.flickr_images.forEach(image =>
             images.push((
-                <figure className='card-footer-item image is-128x128 is-clipped column is-one-quarter' >
+                <figure key={image} className='card-footer-item image is-128x128 is-clipped column is-one-quarter' >
                     <img onClick={() => openImageModal(image)} src={image}></img>
                 </figure>
             )));
@@ -45,7 +45,7 @@ export default function Rocket() {
                     <div className="media">
                         <div className="media-content">
                             <p className="title is-3">{props.launch.mission_name}</p>
-                            <time className='subtitle is-6' datetime={props.launch.launch_date_utc}>Launch@{launchDate}</time>
+                            <time className='subtitle is-6' dateTime={props.launch.launch_date_utc}>Launch@{launchDate}</time>
                         </div>
                     </div>
                     <div className="content">
@@ -61,12 +61,14 @@ export default function Rocket() {
         );
     }
 
-
     // Create a query hook
     const router = useRouter()
-    const { rid } = router.query
+    const { rid } = router.query;
+    const [page, setPage] = useState(0);
     const [rocketData, rocketLoading, rocketError] = useQueryFetch(ROCKET_QUERY(rid));
-    const [rocketLaunchesData, rocketLaunchesLoading, rocketLaunchesError] = useQueryFetch(FIND_LAUNCHES_QUERY(rid));
+    const [rocketLaunchesData, rocketLaunchesLoading, rocketLaunchesError] = useQueryFetch(FIND_LAUNCHES_QUERY, {
+        variables: { rocket_id: rid, offset: page * 5 }
+    });
     const [selectedImage, setSelectedImage] = useState();
     const [isShowModal, setIsShowModal] = useState(false);
     if (rocketLoading || rocketLaunchesLoading) {
@@ -145,6 +147,22 @@ export default function Rocket() {
             <section className="section">
                 <div className="container">
                     <div className="title is-2">Launches: </div>
+                    <nav className="pagination" role="navigation" aria-label="pagination">
+                        <a onClick={() => setPage(prevPage => Math.min(prevPage - 1, 0))}
+                            disabled={page === 0} className="pagination-previous" title="This is the first page" >Previous</a>
+                        <a onClick={() => setPage(prevPage => prevPage + 1)} className="pagination-next">Next page</a>
+                        {/* <ul className="pagination-list">
+                            <li>
+                                <a className="pagination-link is-current" aria-label="Page 1" aria-current="page">1</a>
+                            </li>
+                            <li>
+                                <a className="pagination-link" aria-label="Goto page 2">2</a>
+                            </li>
+                            <li>
+                                <a className="pagination-link" aria-label="Goto page 3">3</a>
+                            </li>
+                        </ul> */}
+                    </nav>
                     {launchesList}
                 </div>
             </section>

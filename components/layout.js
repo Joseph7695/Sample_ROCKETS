@@ -37,22 +37,22 @@ export default ({ children }) => {
                 <a className="navbar-item">Home</a>
               </Link>
             </div>
-            <div className="navbar-end">
+            {/* <div className="navbar-end">
               <div className="navbar-item">
                 <div className="buttons">
                   <a onClick={() => alert('You clicked the button!')} className="button is-primary">Click</a>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </nav>
       </header>
       {children}
-      <footer className="footer">
+      {/* <footer className="footer">
         <div className="content has-text-centered">
           <span>I'm the footer</span>
         </div>
-      </footer>
+      </footer> */}
     </div>
   )
 }
