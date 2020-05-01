@@ -68,6 +68,19 @@ export default function Home() {
         }
       });
       setImages(images);
+      rocketsData.rockets.forEach(rocket => {
+        if (!checkedRockets.some(id => rocket.id === id)) {
+          fetch(`https://api.spacexdata.com/v3/rockets/${rocket.id}`)
+            .then(result => result.json())
+            .then(result => {
+              console.log(result);
+              if (result.flickr_images.length > 0) {
+                setImages(prev_images => { return { ...prev_images, [rocket.id]: result.flickr_images[0] }; });
+                checkedRockets.push(rocket.id);
+              }
+            })
+        }
+      });
     }
   }, [rocketsData, launchesData])
   if (rocketsLoading || launchesLoading) return <p>Loading</p>;
