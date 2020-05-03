@@ -87,26 +87,31 @@ export default function Home() {
   if (rocketsError || launchesError) { console.log("Rocket error", rocketsError, "launches error", launchesError); return <p>ERROR</p>; }
   if (!rocketsData) return <p>Not found</p>;
   return (
-    <section className='hero has-background-light'>
-      <div className='hero-body'>
-        <div className='container'>
-          <ul className='columns'>
-            {
-              rocketsData.rockets.map(rocket => {
-                return (
-                  <Link key={rocket.id} href={`/rocket/${rocket.id}`}>
-                    <div className='column'>
-                      <li className='notification card' key={`rocket__${rocket.id}`}>
-                        <a>{rocket.name} in {rocket.country}</a>
-                        <img className='card-image image is-128x128' src={images[rocket.id]} />
-                      </li>
+    <section className='hero has-background-black is-fullheight'>
+      <div className='container hero-head'>
+        <h1 className="title is-1 has-text-warning">Rockets</h1>
+      </div>
+      <div className='hero-body container'>
+        <ul className='columns is-multiline'>
+          {
+            rocketsData.rockets.map(rocket => {
+              return (
+                <Link key={rocket.id} href={`/rocket/${rocket.id}`}>
+                  <li className='column'>
+                    <div class='box has-background-dark is-clickable'>
+                      <figure className='card-image'>
+                        <img className='image is-128x128' src={images[rocket.id]} alt={`Image of ${rocket.id}`} />
+                      </figure>
+                      <div className='notification card-content has-text-white'>
+                        {rocket.name}
+                      </div>
                     </div>
-                  </Link>
-                );
-              })
-            }
-          </ul>
-        </div>
+                  </li>
+                </Link>
+              );
+            })
+          }
+        </ul>
       </div>
     </section >
   )

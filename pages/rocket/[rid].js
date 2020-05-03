@@ -13,12 +13,12 @@ function useQueryFetch(query, variables) {
 function descriptionCard(key, value) {
     return (
         <div key={key} className="column is-one-third">
-            <article className="card">
+            <article className="card has-background-dark">
                 <div className='card-header'>
-                    <h1 className="card-header-title title is-size-4">{key}</h1>
+                    <h1 className="card-header-title title is-size-4 has-text-white">{key}</h1>
                 </div>
                 <div className="card-content">
-                    <p className="subtitle is-size-5">{'' + value}</p>
+                    <p className="subtitle is-size-5 has-text-white">{'' + value}</p>
                 </div>
             </article>
         </div>
@@ -34,21 +34,21 @@ export default function Rocket() {
         let images = [];
         props.launch.links.flickr_images.forEach(image =>
             images.push((
-                <figure key={image} className='card-footer-item image is-128x128 is-clipped column is-one-quarter' >
+                <figure key={image} className='card-footer-item image is-128x128 is-clipped column is-one-quarter is-clickable' >
                     <img onClick={() => openImageModal(image)} src={image}></img>
                 </figure>
             )));
         const launchDate = new Date(props.launch.launch_date_utc).toDateString();
         return (
-            <div className="card">
+            <div className="card has-background-dark">
                 <div className="card-content">
                     <div className="media">
                         <div className="media-content">
-                            <p className="title is-3">{props.launch.mission_name}</p>
-                            <time className='subtitle is-6' dateTime={props.launch.launch_date_utc}>Launch@{launchDate}</time>
+                            <p className="title is-3 has-text-white">{props.launch.mission_name}</p>
+                            <time className='subtitle is-6 has-text-white' dateTime={props.launch.launch_date_utc}>Launch@{launchDate}</time>
                         </div>
                     </div>
-                    <div className="content">
+                    <div className="content has-text-white">
                         {props.launch.details}
                     </div>
                 </div>
@@ -120,48 +120,30 @@ export default function Rocket() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <section className="section is-paddingles">
+            <section className="section is-paddingles has-background-black">
                 <div className="container">
                     <nav className="breadcrumb" aria-label="breadcrumbs">
                         <ul>
                             <li><a href="/">Rockets</a></li>
-                            <li className="is-active"><a href="#" aria-current="page">{rocketData.rocket.name} Details</a></li>
+                            <li className="is-active"><a href="#" aria-current="page" className='has-text-white'>{rocketData.rocket.name} Details</a></li>
                         </ul>
                     </nav>
                 </div>
             </section>
-            <section className="section">
+            <section className="section has-background-black">
                 <div className="container">
                     <div className="columns is-multiline">
                         {descriptionList}
                     </div>
                 </div>
             </section>
-            <section className="section">
+            <section className="section has-background-black">
                 <div className="container">
-                    <div className="columns is-multiline">
-                        {descriptionList}
-                    </div>
-                </div>
-            </section>
-            <section className="section">
-                <div className="container">
-                    <div className="title is-2">Launches: </div>
+                    <div className="title is-2 has-text-white">Launches: </div>
                     <nav className="pagination" role="navigation" aria-label="pagination">
                         <a onClick={() => setPage(prevPage => Math.min(prevPage - 1, 0))}
-                            disabled={page === 0} className="pagination-previous" title="This is the first page" >Previous</a>
-                        <a onClick={() => setPage(prevPage => prevPage + 1)} className="pagination-next">Next page</a>
-                        {/* <ul className="pagination-list">
-                            <li>
-                                <a className="pagination-link is-current" aria-label="Page 1" aria-current="page">1</a>
-                            </li>
-                            <li>
-                                <a className="pagination-link" aria-label="Goto page 2">2</a>
-                            </li>
-                            <li>
-                                <a className="pagination-link" aria-label="Goto page 3">3</a>
-                            </li>
-                        </ul> */}
+                            disabled={page === 0} className="pagination-previous has-background-light has-text-black" title="This is the first page" >Previous</a>
+                        <a onClick={() => setPage(prevPage => prevPage + 1)} className="pagination-next has-background-light has-text-black">Next page</a>
                     </nav>
                     {launchesList}
                 </div>

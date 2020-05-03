@@ -13,46 +13,13 @@ export default ({ children }) => {
   }
 
   return (
-    <div>
+    <>
       <Head>
         <title>ROCKETS</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <header>
-        <nav className="navbar" role="navigation" aria-label="main navigation">
-          <div className="navbar-brand">
-            <a className="navbar-item">
-              <img src='/rocket.png'></img>
-            </a>
-            <a id="burger" onClick={toggleStyles}
-              role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarmenu">
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-            </a>
-          </div>
-          <div id="navbarmenu" className="navbar-menu">
-            <div className="navbar-start">
-              <Link href="/">
-                <a className="navbar-item">Home</a>
-              </Link>
-            </div>
-            {/* <div className="navbar-end">
-              <div className="navbar-item">
-                <div className="buttons">
-                  <a onClick={() => alert('You clicked the button!')} className="button is-primary">Click</a>
-                </div>
-              </div>
-            </div> */}
-          </div>
-        </nav>
-      </header>
       {children}
-      {/* <footer className="footer">
-        <div className="content has-text-centered">
-          <span>I'm the footer</span>
-        </div>
-      </footer> */}
-    </div>
+    </>
   )
 }
+
